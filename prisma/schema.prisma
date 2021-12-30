@@ -22,7 +22,7 @@ model User {
 }
 
 model Company {
-  id       Int        @id
+  id       Int        @id @default(autoincrement())
   name     String
   User     User[]
   Arus_kas Arus_kas[]
