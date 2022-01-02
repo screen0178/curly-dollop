@@ -10,8 +10,6 @@ import { AuthLoginDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from 'src/prisma.service';
-import { Prisma } from '@prisma/client';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -36,10 +34,11 @@ export class AuthService {
   }
 
   async createRefreshToken(user: any) {
+    const ms = require('basic-ms');
     const expiredAt = new Date();
     expiredAt.toLocaleDateString('id-ID');
     expiredAt.setSeconds(
-      expiredAt.getSeconds() + parseInt(process.env.JWT_REFRESH_EXPIRE) * 3600,
+      expiredAt.getSeconds() + ms(process.env.JWT_REFRESH_EXPIRE),
     );
 
     const _token = uuidv4();

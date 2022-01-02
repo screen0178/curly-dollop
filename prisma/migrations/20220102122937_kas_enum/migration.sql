@@ -1,0 +1,2 @@
+-- CreateEnum
+CREATE TYPE "Tipe_kas" AS ENUM ('PEMASUKAN', 'PENGELUARAN');

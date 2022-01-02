@@ -40,7 +40,7 @@ model Company {
 model Arus_kas {
   id         Int      @id @default(autoincrement())
   timestamp  DateTime
-  tipe_kas   String
+  tipe_kas   Tipe_kas
   uraian     String
   file_bukti String
   company    Company  @relation(fields: [companyId], references: [id])
@@ -54,4 +54,9 @@ model Arus_kas {
 enum Role {
   USER
   ADMIN
+}
+
+enum Tipe_kas {
+  PEMASUKAN
+  PENGELUARAN
 }
