@@ -11,14 +11,23 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String     @unique
-  name      String
-  password  String
-  company   Company    @relation(fields: [companyId], references: [id])
-  companyId Int
-  Arus_kas  Arus_kas[]
-  role      Role       @default(USER)
+  id         Int         @id @default(autoincrement())
+  username   String      @unique
+  name       String
+  password   String
+  company    Company     @relation(fields: [companyId], references: [id])
+  companyId  Int
+  role       Role        @default(USER)
+  Arus_kas   Arus_kas[]
+  User_token User_token?
+}
+
+model User_token {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  expiryDate DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int      @unique
 }
 
 model Company {
