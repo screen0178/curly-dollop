@@ -36,32 +36,19 @@ export class AuthService {
   async createRefreshToken(user: any) {
     const ms = require('basic-ms');
     const expiredAt = new Date();
-    expiredAt.toLocaleDateString('id-ID');
+    expiredAt.toLocaleDateString();
     expiredAt.setSeconds(
-      expiredAt.getSeconds() + ms(process.env.JWT_REFRESH_EXPIRE),
+      expiredAt.getSeconds() + ms(process.env.JWT_REFRESH_EXPIRE) / 1000,
     );
 
     const _token = uuidv4();
-    let token = await this.prisma.user_token.findUnique({
-      where: {
+    const token = await this.prisma.user_token.create({
+      data: {
+        token: _token,
+        expiryDate: expiredAt,
         userId: user,
       },
     });
-
-    if (!token) {
-      token = await this.prisma.user_token.create({
-        data: {
-          token: _token,
-          expiryDate: expiredAt,
-          userId: user,
-        },
-      });
-    } else {
-      token = await this.prisma.user_token.update({
-        where: { userId: user },
-        data: { token: _token, expiryDate: expiredAt },
-      });
-    }
 
     return token.token;
   }
@@ -86,7 +73,7 @@ export class AuthService {
 
     return {
       access_token: this.jwtService.sign(payload),
-      refresh_token: await this.createRefreshToken(refresh_token.userId),
+      refresh_token: data.token,
     };
   }
 
@@ -106,13 +93,12 @@ export class AuthService {
   }
 
   async logout(data: { refresh_token: string }) {
-    console.log(data.refresh_token);
     const token = await this.prisma.user_token.delete({
       where: {
         token: data.refresh_token,
       },
     });
 
-    console.log(token);
+    return { message: 'token revoked' };
   }
 }

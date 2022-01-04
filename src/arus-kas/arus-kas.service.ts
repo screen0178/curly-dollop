@@ -26,7 +26,11 @@ export class ArusKasService {
   }
 
   async findAll() {
-    const kas = this.prisma.arus_kas.findMany();
+    const kas = await this.prisma.arus_kas.findMany({
+      orderBy: {
+        id: 'asc',
+      },
+    });
 
     return kas;
   }

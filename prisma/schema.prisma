@@ -11,15 +11,15 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  username   String      @unique
-  name       String
-  password   String
-  company    Company     @relation(fields: [companyId], references: [id])
-  companyId  Int
-  role       Role        @default(USER)
-  Arus_kas   Arus_kas[]
-  User_token User_token?
+  id        Int          @id @default(autoincrement())
+  username  String       @unique
+  name      String
+  password  String
+  company   Company      @relation(fields: [companyId], references: [id])
+  companyId Int
+  role      Role         @default(USER)
+  Arus_kas  Arus_kas[]
+  tokens    User_token[]
 }
 
 model User_token {
@@ -27,7 +27,7 @@ model User_token {
   token      String   @unique
   expiryDate DateTime
   user       User     @relation(fields: [userId], references: [id])
-  userId     Int      @unique
+  userId     Int
 }
 
 model Company {
@@ -42,6 +42,7 @@ model Arus_kas {
   timestamp  DateTime
   tipe_kas   Tipe_kas
   uraian     String
+  nominal    Int      @default(0)
   file_bukti String
   company    Company  @relation(fields: [companyId], references: [id])
   companyId  Int
