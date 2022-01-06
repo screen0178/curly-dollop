@@ -61,7 +61,11 @@ export class AuthService {
         token: data.token,
       },
     });
-
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: refresh_token.userId,
+      },
+    });
     if (!refresh_token) throw new NotFoundException('refresh token not founds');
 
     const verify = refresh_token.expiryDate.getTime() < new Date().getTime();
@@ -74,6 +78,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
       refresh_token: data.token,
+      user: user,
     };
   }
 

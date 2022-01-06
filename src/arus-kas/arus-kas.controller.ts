@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Prisma } from '@prisma/client';
@@ -33,8 +34,8 @@ export class ArusKasController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.arusKasService.findAll();
+  findAll(@Query() query: { userId: string; companyId: string }) {
+    return this.arusKasService.findAll(query);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -3,19 +3,12 @@ import { ArusKasService } from './arus-kas.service';
 import { ArusKasController } from './arus-kas.controller';
 import { PrismaService } from 'src/prisma.service';
 import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 
 @Module({
   imports: [
     MulterModule.register({
-      storage: diskStorage({
-        destination: (req, file, cb) => {
-          cb(null, './public/upload');
-        },
-        filename: (req, file, cb) => {
-          cb(null, `${Date.now()}-${file.originalname}`);
-        },
-      }),
+      storage: memoryStorage(),
       limits: { fileSize: 25 * 1024 * 1024 },
     }),
   ],
@@ -23,3 +16,12 @@ import { diskStorage } from 'multer';
   providers: [ArusKasService, PrismaService],
 })
 export class ArusKasModule {}
+
+// storage: diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, './public/upload');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// })
