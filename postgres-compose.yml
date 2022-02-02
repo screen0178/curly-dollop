@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:14
+    container_name: fsn-psql
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=fsn-kas
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./pgsql-volume:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5433:5432"
+    
+
+
+
+
+

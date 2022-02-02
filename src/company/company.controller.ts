@@ -16,7 +16,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Controller('company')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+  constructor(private readonly companyService: CompanyService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
