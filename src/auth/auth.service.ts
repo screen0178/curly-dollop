@@ -88,7 +88,6 @@ export class AuthService {
   }
 
   async login(authLoginDto: AuthLoginDto) {
-    console.log(authLoginDto)
     const user = await this.validateUser(authLoginDto);
     delete user.password;
 
