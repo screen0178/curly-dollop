@@ -22,7 +22,7 @@ async function main() {
     data: {
       name: "Super admin",
       password: hash,
-      username: "ADMIN",
+      username: "admin",
       companyId: 1,
       role: "ADMIN"
     }

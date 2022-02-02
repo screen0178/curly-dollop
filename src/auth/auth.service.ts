@@ -16,7 +16,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private prisma: PrismaService,
-  ) {}
+  ) { }
 
   // Core Logic
 
@@ -24,6 +24,11 @@ export class AuthService {
     const { username, password } = authLoginDto;
 
     const user = await this.usersService.findByUsername({ username: username });
+
+    if (!user) {
+      throw new NotFoundException("USER NOT FOUND")
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -83,6 +88,7 @@ export class AuthService {
   }
 
   async login(authLoginDto: AuthLoginDto) {
+    console.log(authLoginDto)
     const user = await this.validateUser(authLoginDto);
     delete user.password;
 
