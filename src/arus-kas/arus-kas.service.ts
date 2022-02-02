@@ -5,10 +5,11 @@ import { CreateArusKaDto } from './dto/create-arus-ka.dto';
 import { UpdateArusKaDto } from './dto/update-arus-ka.dto';
 import * as fs from 'fs';
 import sharp from 'sharp';
+import * as path from 'path';
 
 @Injectable()
 export class ArusKasService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(
     data: { data: Prisma.Arus_kasCreateInput },
@@ -45,9 +46,7 @@ export class ArusKasService {
         },
         where: { userId: parseInt(query.userId) },
       };
-      console.log('b');
     } else if (!query.userId && query.companyId) {
-      console.log('a');
       config = {
         orderBy: {
           id: 'asc',
@@ -64,14 +63,12 @@ export class ArusKasService {
           companyId: parseInt(query.companyId),
         },
       };
-      console.log('d');
     } else {
       config = {
         orderBy: {
           id: 'asc',
         },
       };
-      console.log('c');
     }
 
     const kas = await this.prisma.arus_kas.findMany(config);
@@ -111,10 +108,11 @@ export class ArusKasService {
     });
 
     let directoryPath: any = __dirname;
-    directoryPath =
-      directoryPath.split('\\').slice(0, -2).join('\\') +
-      '\\public\\' +
-      oldData.file_bukti;
+
+    directoryPath = directoryPath.split('/').slice(0, -2).join('/') +
+      '/public/upload/' +
+      oldData.file_bukti
+
 
     if (file) {
       const { buffer, originalname } = file;
@@ -145,8 +143,8 @@ export class ArusKasService {
     let directoryPath: any = __dirname;
 
     directoryPath =
-      directoryPath.split('\\').slice(0, -2).join('\\') +
-      '\\public\\upload\\' +
+      directoryPath.split('/').slice(0, -2).join('/') +
+      '/public/upload/' +
       kas.file_bukti;
 
     if (kas.file_bukti !== '-') fs.unlinkSync(directoryPath);
