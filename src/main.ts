@@ -9,6 +9,7 @@ global.__basedir = __dirname;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  app.enableCors()
   await app.listen(port || 3000);
 
   const prismaService: PrismaService = app.get(PrismaService);
